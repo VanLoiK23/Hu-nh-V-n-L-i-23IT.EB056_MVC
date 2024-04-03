@@ -1,0 +1,7 @@
+Mysql
+CREATE TABLE 'student_mvc'.sv (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    age INT,
+    score FLOAT
+);
