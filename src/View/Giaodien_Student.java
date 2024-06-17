@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
@@ -31,6 +32,10 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
@@ -40,6 +45,7 @@ import DAO.sv_dao;
 import Model.SinhVien;
 
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JTextArea;
 
 public class Giaodien_Student{
@@ -48,11 +54,12 @@ public class Giaodien_Student{
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private JButton btnNewButton ;
+	private JButton btnNewButton,savetofile ;
 	private JLabel lblNewLabel_1;
 	private  JTable table;
 	private JTree tree;
 	private JTextArea textArea;
+	
 
 	/**
 	 * Launch the application.
@@ -82,7 +89,7 @@ public class Giaodien_Student{
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 300);
+		frame.setBounds(100, 100, 1150, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -127,7 +134,18 @@ public class Giaodien_Student{
 		table.getColumnModel().getColumn(0).setMinWidth(20);
         showdata();
         
-	        
+
+        JButton increaseSizeButton = new JButton("Tăng size");
+        increaseSizeButton.setBounds(1030,30,90,15);
+        JButton decreaseSizeButton = new JButton("Giảm size");
+        decreaseSizeButton.setBounds(930,30,100,15);
+        JButton changeColorButton = new JButton("Thay đổi màu chữ");
+        
+        changeColorButton.setBounds(960,50,140,15);
+	        frame.getContentPane().add(increaseSizeButton);
+	        frame.getContentPane().add(decreaseSizeButton);
+	        frame.getContentPane().add(changeColorButton);
+
 	        JScrollPane scrollPane = new JScrollPane(table);
 	        scrollPane.setSize(230, 200);
 	        scrollPane.setLocation(200, 30);
@@ -135,39 +153,53 @@ public class Giaodien_Student{
 	        frame.getContentPane().add(scrollPane);
 	       
 	        ActionListener ac=new Controller_sv(this);
+	        increaseSizeButton.addActionListener(ac);
+	        decreaseSizeButton.addActionListener(ac);
+	        changeColorButton.addActionListener(ac);
+
 	        
 	        btnNewButton = new JButton("Save");
 	        btnNewButton.setBounds(33, 174, 89, 23);
 	        btnNewButton.addActionListener(ac);
 	        frame.getContentPane().add(btnNewButton);
 	        
+	        savetofile = new JButton("Lưu vào file trong thư mục");
+	        savetofile.setBounds(450, 224, 200, 23);
+	        savetofile.addActionListener(ac);
+	        frame.getContentPane().add(savetofile);
+	        
 	        JButton choose=new JButton("Choose Directory");
 	        choose.setBounds(476, 39, 150, 30);
 	        choose.addActionListener(ac);
 	        
-	         tree=new JTree();
+	        tree=new JTree();
 	        tree.setBounds(450, 100, 200, 100);
 	        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 	        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 	        DefaultTreeModel treeModel = new DefaultTreeModel(root);
 	        tree.setModel(treeModel);
 	        
+	        
 	        TreeSelectionListener select=new Controller_sv(this);
 	        tree.addTreeSelectionListener(select);
 	        
+	        JScrollPane treeScrollPane = new JScrollPane(tree);
+	        treeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	        treeScrollPane.setBounds(450, 100, 200, 100);
+	        
 	        frame.getContentPane().add(choose);
-	        frame.getContentPane().add(tree);
+	        frame.getContentPane().add(treeScrollPane);
 	        
 	        textArea = new JTextArea();
-	        textArea.setBounds(670, 30, 206, 222);
+	        textArea.setBounds(670, 30, 256, 222);
 	        JScrollPane scroll=new JScrollPane(textArea);
 	        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	        scroll.setBounds(670,30,206,222);
+	        scroll.setBounds(670,30,256,222);
 	        frame.getContentPane().add(scroll);
 	        
-	        JLabel lblNewLabel_2 = new JLabel("Content of the file");
+	        JLabel lblNewLabel_2 = new JLabel("Content of the file(.xml,.txt,.pdf)");
 	        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	        lblNewLabel_2.setBounds(704, 11, 172, 15);
+	        lblNewLabel_2.setBounds(670, 11, 222, 15);
 	        frame.getContentPane().add(lblNewLabel_2);
             try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -238,4 +270,8 @@ public class Giaodien_Student{
 		}
     	
     }
+    
+    
+
+
 }
